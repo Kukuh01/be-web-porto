@@ -20,7 +20,10 @@ class Article extends Model
 
     // Articles<-Many to Many->Categories
     public function categories(){
-        return $this->belongsToMany(Category::class);
+        return $this->belongsToMany(Category::class,
+            'article_categories', // pivot table
+        'article_id',
+        'category_id');
     }
 
     protected static function slugSource()

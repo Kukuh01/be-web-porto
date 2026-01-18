@@ -17,11 +17,14 @@ class Category extends Model
 
     // Categories<-Many to Many->Articles
     public function articles(){
-        return $this->belongsToMany(Article::class);
+        return $this->belongsToMany(Article::class,
+        'article_categories', // pivot table
+        'article_id',
+        'category_id');
     }
 
     protected static function slugSource()
     {
-        return 'title';
+        return 'category_name';
     }
 }
