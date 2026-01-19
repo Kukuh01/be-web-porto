@@ -1,22 +1,35 @@
 <?php
 
-namespace App\Filament\Resources\Teches\Tables;
+namespace App\Filament\Resources\TechStacks\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Schemas\Components\Image;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
-class TechesTable
+class TechStacksTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('tech_name')
+                ->searchable()
+                ->sortable(),
+                ImageColumn::make('url_image_tech')
+                ->label('Image'),
+                TextColumn::make('created_at')
+                ->label('Created')
+                ->dateTime('d F Y, H:i:s')
+                ->timezone('Asia/Jakarta')
+                ->sortable()
+                ->searchable(),
             ])
             ->filters([
                 TrashedFilter::make(),

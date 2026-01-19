@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Filament\Resources\Teches;
+namespace App\Filament\Resources\TechStacks;
 
-use App\Filament\Resources\Teches\Pages\CreateTech;
-use App\Filament\Resources\Teches\Pages\EditTech;
-use App\Filament\Resources\Teches\Pages\ListTeches;
-use App\Filament\Resources\Teches\Schemas\TechForm;
-use App\Filament\Resources\Teches\Tables\TechesTable;
-use App\Models\Tech;
+use App\Filament\Resources\TechStacks\Pages\CreateTechStack;
+use App\Filament\Resources\TechStacks\Pages\EditTechStack;
+use App\Filament\Resources\TechStacks\Pages\ListTechStacks;
+use App\Filament\Resources\TechStacks\Schemas\TechStackForm;
+use App\Filament\Resources\TechStacks\Tables\TechStacksTable;
+use App\Models\TechStack;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -16,20 +16,20 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class TechResource extends Resource
+class TechStackResource extends Resource
 {
-    protected static ?string $model = Tech::class;
+    protected static ?string $model = TechStack::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     public static function form(Schema $schema): Schema
     {
-        return TechForm::configure($schema);
+        return TechStackForm::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return TechesTable::configure($table);
+        return TechStacksTable::configure($table);
     }
 
     public static function getRelations(): array
@@ -42,9 +42,9 @@ class TechResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListTeches::route('/'),
-            'create' => CreateTech::route('/create'),
-            'edit' => EditTech::route('/{record}/edit'),
+            'index' => ListTechStacks::route('/'),
+            'create' => CreateTechStack::route('/create'),
+            'edit' => EditTechStack::route('/{record}/edit'),
         ];
     }
 
