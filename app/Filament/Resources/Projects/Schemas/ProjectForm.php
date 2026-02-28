@@ -8,6 +8,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Symfony\Component\HttpFoundation\File\File;
 
 class ProjectForm
 {
@@ -18,6 +19,11 @@ class ProjectForm
             ->components([
                 TextInput::make('title')
                 ->required(),
+
+                FileUpload::make('thumbnail')
+                ->image()
+                ->disk('public')
+                ->visibility('public'),
                 
                 Select::make('techStacks')
                 ->relationship('techStacks', 'tech_name')
@@ -44,6 +50,8 @@ class ProjectForm
                     ->schema([
                         FileUpload::make('url_image')
                         ->image()
+                        ->disk('public')
+                        ->visibility('public')
                         ->required(),
                     ]),
             ]);

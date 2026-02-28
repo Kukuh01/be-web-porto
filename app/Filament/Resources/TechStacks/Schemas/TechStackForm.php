@@ -17,6 +17,8 @@ class TechStackForm
                 FileUpload::make('url_image_tech')
                 ->image()
                 ->label('Image')
+                ->disk('public')
+                ->visibility('public')
                 ->required(),
             ]);
     }

@@ -32,6 +32,8 @@ class ArticleForm
 
                         FileUpload::make('url_thumbnail')
                             ->image()
+                            ->disk('public')
+                            ->visibility('public')
                             ->required(),
 
                         Select::make('status')

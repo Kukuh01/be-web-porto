@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string("slug")->unique();
+            $table->string("thumbnail");
             $table->string("title");
             $table->longText("description");
             $table->enum('status', ['deployed', 'undeployed', 'on progres']);
-            $table->string("url_github");
-            $table->string("url_site");
+            $table->string("url_github")->nullable();
+            $table->string("url_site")->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

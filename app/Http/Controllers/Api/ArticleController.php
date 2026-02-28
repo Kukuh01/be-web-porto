@@ -11,7 +11,7 @@ class ArticleController extends Controller
 {
     public function index(Request $request)
     {
-        $perPage = $request->input('per_page', 5);
+        $perPage = $request->input('per_page', 4);
 
         $articles = Article::with('categories')
             ->when($request->filled('category_id'), function ($query) use ($request) {
@@ -22,6 +22,16 @@ class ArticleController extends Controller
             ->when($request->filled('category'), function ($query) use ($request) {
                 $query->whereHas('categories', function ($q) use ($request) {
                     $q->where('slug', $request->category);
+                });
+            })
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $keyword = $request->search;
+                
+                // Penting: Gunakan closure function ($q) untuk grouping where
+                // Agar logicnya menjadi: (Category A) AND (Title LIKE %...% OR Content LIKE %...%)
+                $query->where(function ($q) use ($keyword) {
+                    $q->where('title', 'like', "%{$keyword}%")
+                      ->orWhere('content', 'like', "%{$keyword}%");
                 });
             })
             ->orderByDesc('created_at')
@@ -37,21 +47,21 @@ class ArticleController extends Controller
         return new ArticleApiResource($article);
     }
 
-    public function search(Request $request)
-    {
-        $q = $request->input('q');
-        $perPage = $request->input('per_page', 5);
+    // public function search(Request $request)
+    // {
+    //     $q = $request->input('q');
+    //     $perPage = $request->input('per_page', 5);
 
-        $articles = Article::with('categories')
-            ->when($q, function ($query) use ($q) {
-                $query->where(function ($subQuery) use ($q) {
-                    $subQuery->where('title', 'like', "%{$q}%")
-                              ->orWhere('content', 'like', "%{$q}%");
-                });
-            })
-            ->orderByDesc('created_at')
-            ->paginate($perPage);
+    //     $articles = Article::with('categories')
+    //         ->when($q, function ($query) use ($q) {
+    //             $query->where(function ($subQuery) use ($q) {
+    //                 $subQuery->where('title', 'like', "%{$q}%")
+    //                           ->orWhere('content', 'like', "%{$q}%");
+    //             });
+    //         })
+    //         ->orderByDesc('created_at')
+    //         ->paginate($perPage);
 
-        return ArticleApiResource::collection($articles);
-    }
+    //     return ArticleApiResource::collection($articles);
+    // }
 }

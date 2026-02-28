@@ -3,10 +3,12 @@
 namespace App\Filament\Resources\Articles\Tables;
 
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
@@ -22,7 +24,8 @@ class ArticlesTable
                 ->limit(50)
                 ->searchable()
                 ->sortable(),
-                ImageColumn::make('url_thumbnail'),
+                ImageColumn::make('url_thumbnail')
+                ->disk('public'),
                 TextColumn::make('content')
                 ->limit(100)
                 ->wrap()
@@ -44,7 +47,9 @@ class ArticlesTable
                 TrashedFilter::make(),
             ])
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

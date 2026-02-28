@@ -17,6 +17,7 @@ class Project extends Model
         'status',
         'url_github',
         'url_site',
+        'thumbnail',
     ];
 
     // Projects <- Many To Many -> Tech Stacks
