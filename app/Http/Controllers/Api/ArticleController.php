@@ -5,44 +5,39 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\ArticleApiResource;
 use App\Models\Article;
+use App\Services\ArticleService;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
+    public function __construct(
+        protected ArticleService $articleService
+    ){}
+
     public function index(Request $request)
     {
-        $perPage = $request->input('per_page', 4);
+        $perPage = $request->integer('per_page', 4);
 
-        $articles = Article::with('categories')
-            ->when($request->filled('category_id'), function ($query) use ($request) {
-                $query->whereHas('categories', function ($q) use ($request) {
-                    $q->where('categories.id', $request->category_id);
-                });
-            })
-            ->when($request->filled('category'), function ($query) use ($request) {
-                $query->whereHas('categories', function ($q) use ($request) {
-                    $q->where('slug', $request->category);
-                });
-            })
-            ->when($request->filled('search'), function ($query) use ($request) {
-                $keyword = $request->search;
-                
-                // Penting: Gunakan closure function ($q) untuk grouping where
-                // Agar logicnya menjadi: (Category A) AND (Title LIKE %...% OR Content LIKE %...%)
-                $query->where(function ($q) use ($keyword) {
-                    $q->where('title', 'like', "%{$keyword}%")
-                      ->orWhere('content', 'like', "%{$keyword}%");
-                });
-            })
-            ->orderByDesc('created_at')
-            ->paginate($perPage);
+        $filters = [
+            'search' => $request->input('search'),
+        ];
+
+        if ($request->filled('category_id')) {
+            $filters['category_id'] = $request->input('category_id');
+        }
+
+        if ($request->filled('category')) {
+            $filters['category'] = explode(',', $request->input('category'));
+        }
+
+        $articles = $this->articleService->getArticles($filters, $perPage);
 
         return ArticleApiResource::collection($articles);
     }
 
     public function show(Article $article)
     {
-        $article->load('categories');
+        $article = $this->articleService->getArticleDetail($article);
 
         return new ArticleApiResource($article);
     }

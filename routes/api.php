@@ -4,8 +4,6 @@ use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\TechStackController;
-use App\Models\Project;
-use App\Models\TechStack;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,7 +14,6 @@ Route::get('/user', function (Request $request) {
 Route::get('/category/{category:slug}', [CategoryController::class, 'show']);
 Route::apiResource('/categories', CategoryController::class);
 
-Route::get('/article/search', [ArticleController::class, 'search']);
 Route::get('/article/{article:slug}', [ArticleController::class, 'show']);
 Route::apiResource('/articles', ArticleController::class);
 
