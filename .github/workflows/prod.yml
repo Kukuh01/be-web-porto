@@ -20,7 +20,7 @@ jobs:
           script: |
             echo "🚀 Start Deployment"
 
-            cd /var/www/be-web-porto
+            cd /var/www/be.silvanus.my.id
 
             echo "📥 Pull latest code"
             git pull origin main
