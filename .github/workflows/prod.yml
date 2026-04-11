@@ -28,21 +28,17 @@ jobs:
             echo "📦 Install Composer dependencies"
             composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
-            echo "🔑 Set permission"
-            chmod -R 775 storage bootstrap/cache
+            echo "🔐 Fix ownership"
+            sudo chown -R silvanus:www-data /var/www/be.silvanus.my.id
+
+            echo "🔐 Fix permission Laravel"
+            sudo chmod -R 775 storage bootstrap/cache
 
             echo "⚙️ Laravel optimize"
-            php artisan config:clear
-            php artisan cache:clear
-            php artisan route:clear
-            php artisan view:clear
-
+            php artisan optimize:clear
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
-
-            echo "🗄️ Run migration"
-            php artisan migrate --force
 
             echo "🔄 Restart PHP-FPM"
             sudo systemctl restart php8.2-fpm
