@@ -8,7 +8,7 @@ class ChatbotController extends Controller
 {
     public function chat(Request $request)
     {
-        $response = Http::post('https://n8n.silvanus.my.id/webhook-test/6d7146a2-b735-4aef-b1e4-0e751a19d061', [
+        $response = Http::post('https://n8n.silvanus.my.id/webhook/6d7146a2-b735-4aef-b1e4-0e751a19d061', [
             'message' => $request->message,
             'sessionid' => $request->sessionId,
         ]);
