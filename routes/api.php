@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\TechStackController;
+use App\Http\Controllers\Api\ChatbotController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,3 +23,5 @@ Route::apiResource('/tech-stacks', TechStackController::class);
 
 Route::get('/project/{project:slug}', [ProjectController::class, 'show']);
 Route::apiResource('/projects', ProjectController::class);
+
+Route::post('/chatbot', [ChatbotController::class, 'chat']);
