@@ -23,7 +23,8 @@ jobs:
             cd /var/www/be.silvanus.my.id
 
             echo "📥 Pull latest code"
-            git pull origin main
+            git fetch origin
+            git reset --hard origin/main
 
             echo "📦 Install Composer dependencies"
             composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
